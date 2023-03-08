@@ -2,6 +2,8 @@ package com.linga.productservice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.linga.productservice.dto.ProductRequest;
+import com.linga.productservice.repository.ProductRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,6 +30,9 @@ class ProductServiceApplicationTests {
 	private MockMvc mockMvc;
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@Autowired
+	private ProductRepository productRepository;
 	@Container
 	// to let junit know this is a docker container, and static to access
 	//since the mongoDbContainer is depricated,  so we need to specify the docker image
@@ -49,6 +54,8 @@ class ProductServiceApplicationTests {
 				.content(convertedProductString))
 		.andExpect(status().isCreated());
 
+		//checking whether the product is in DB
+		Assertions.assertEquals(1, productRepository.findAll().size());
 	}
 
 	private ProductRequest getProductRequest() {
@@ -57,6 +64,7 @@ class ProductServiceApplicationTests {
 				.description("iphone 12")
 				.price(BigDecimal.valueOf(1000))
 				.build();
+
 	}
 
 }
