@@ -30,7 +30,7 @@ public class ProductService {
         logger.info("Product {} is saved", product.getId());
         return this.mapToProductResponse(prod);
     }
-    public List<ProductResponse> getProduct() {
+    public List<ProductResponse> getAllProduct() {
         List<Product> products = productRepository.findAll();
         logger.info("The products are fetched successfully");
         return products.stream().map(this::mapToProductResponse).toList();
